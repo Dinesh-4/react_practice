@@ -3,7 +3,9 @@
 -> npm install
 -> npm run dev
 
-
+------------------------
+Building Components
+-> npm i bootstrap@version(5.2.3)
 
 
 // JSX: JavaScript XML
