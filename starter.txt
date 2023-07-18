@@ -9,6 +9,7 @@ Building Components
 
 -> npm i styled-components
 -> npm i @types/styled-components
+-> npm i react-icons@4.7.1
 
 
 // JSX: JavaScript XML
