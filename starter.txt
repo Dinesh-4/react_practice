@@ -7,6 +7,9 @@
 Building Components
 -> npm i bootstrap@version(5.2.3)
 
+-> npm i styled-components
+-> npm i @types/styled-components
+
 
 // JSX: JavaScript XML
 https://babeljs.io/repl
