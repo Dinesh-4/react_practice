@@ -1,11 +1,13 @@
 
+let count = 0;
 
-function Message(){
-    // JSX: JavaScript XML
-    const name = 'Alien';
-    if (name)
-        return <h1>Hello {name}</h1>;
-    return <h1>Hello World</h1>; 
+function Message() {
+    let count = 0;
+    count++;
+
+  return (
+    <div>Message {count}</div>
+  )
 }
 
-export default Message;
+export default Message

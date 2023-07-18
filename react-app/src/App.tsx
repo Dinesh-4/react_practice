@@ -1,20 +1,13 @@
 import { useState } from "react";
+import Message from "./Message";
 
 function App() {
 
-  const[person, setPerson] = useState({
-    firstName: '',
-    lastName: '',
-    contact: {
-      address: {
-        street: ''
-      }
-    }
-  });
-  
-  const [isLoading, setLoading] = useState(false);
   return (
     <div>
+      <Message />
+      <Message />
+      <Message />
 
     </div>
   );
