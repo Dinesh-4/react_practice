@@ -2,7 +2,7 @@
 let count = 0;
 
 function Message() {
-    let count = 0;
+    console.log('Message Called', count)
     count++;
 
   return (
