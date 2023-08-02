@@ -16,9 +16,10 @@ function App() {
 
     setLoading(true);
     axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/users", {signal: controller.signal})
+      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
+        signal: controller.signal,
+      })
       .then((res) => {
-        
         setUsers(res.data);
         setLoading(false);
       })
@@ -26,20 +27,33 @@ function App() {
         if (err instanceof CanceledError) return;
         setError(err.message);
         setLoading(false);
-      }) 
+      });
 
-      return () => controller.abort();
+    return () => controller.abort();
   }, []);
 
+  const deleteUser = (user: User) => {
+    const originalUsers = [...users];
+    setUsers(users.filter(u => u.id !== user.id))
+
+    axios.delete('https://jsonplaceholder.typicode.com/users/' + user.id)
+    .catch(err => {
+      setError(err.message);
+      setUsers(originalUsers);
+    })
+  };
   return (
     <>
-   { error && <p className="text-danger">{error}</p> }
-   { isLoading && <div className="spinner-borber"></div>}
-    <ul>
-      {users.map((user) => (
-        <li key={user.id}>{user.name}</li>
-      ))}
-    </ul>
+      {error && <p className="text-danger">{error}</p>}
+      {isLoading && <div className="spinner-borber"></div>}
+      <ul className="list-group">
+        {users.map((user) => (
+          <li key={user.id} className="list-group-item d-flex justify-content-between">
+            {user.name}
+            <button className="btn btn-outline-danger" onClick={() => deleteUser(user)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
