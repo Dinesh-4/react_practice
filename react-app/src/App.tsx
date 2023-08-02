@@ -1,25 +1,19 @@
 import { useEffect, useState } from "react";
-import apiClient, { CanceledError } from "./services/api-client";
+import { CanceledError } from "./services/api-client";
+import  userService, { User } from "./services/user-service";
 
-interface User {
-  id: number;
-  name: string;
-}
-
+ 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
+
 
     setLoading(true);
-    apiClient
-      .get<User[]>("/users", {
-        signal: controller.signal,
-      })
-      .then((res) => {
+    const {request, cancel} = userService.getAllUsers()
+      request.then((res) => {
         setUsers(res.data);
         setLoading(false);
       })
@@ -29,15 +23,15 @@ function App() {
         setLoading(false);
       });
 
-    return () => controller.abort();
+    return () => cancel();
   }, []);
 
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
     setUsers(users.filter(u => u.id !== user.id))
 
-    apiClient.delete('/users/' + user.id)
-    .catch(err => {
+    
+    userService.deleteUser(user.id).catch(err => {
       setError(err.message);
       setUsers(originalUsers);
     })
@@ -48,8 +42,8 @@ function App() {
     const newUser = { id: 0, name: 'Dinesh'};
     setUsers([newUser, ...users])
 
-    apiClient.post('/users', newUser)
-    .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
+    
+    userService.createUser(newUser).then(({ data: savedUser }) => setUsers([savedUser, ...users]))
     .catch(err => {
       setError(err.message);
       setUsers(originalUsers);
@@ -62,8 +56,8 @@ function App() {
     setUsers(users.map(u => u.id === user.id ? updatedUser : u));
 
 
-    apiClient.patch('/users/' + user.id, updatedUser)
-      .catch(err => {
+    
+      userService.updateUser(updatedUser).catch(err => {
         setError(err.message);
         setUsers(originalUsers);
       })
